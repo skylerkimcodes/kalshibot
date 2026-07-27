@@ -1,0 +1,23 @@
+[Unit]
+Description=Kalshi crypto 15m spot-lag bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kalshibot
+Group=kalshibot
+WorkingDirectory=/opt/kalshibot
+Environment=PYTHONPATH=/opt/kalshibot
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=/opt/kalshibot/.env
+# Dry-run by default. Add --live (and --allow-prod on prod) for real orders.
+ExecStart=/opt/kalshibot/venv/bin/python3 -u -m kalshibot
+Restart=always
+RestartSec=5
+Nice=5
+StandardOutput=append:/opt/kalshibot/logs/bot.log
+StandardError=append:/opt/kalshibot/logs/bot.log
+
+[Install]
+WantedBy=multi-user.target
